@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {    
-    this.loading = true;
+    
     this.notificationService.printSuccessMessage(MessageContstants.SYSTEM_THANHCONG);
     this.notificationService.printErrorMessage(MessageContstants.SYSTEM_ERROR_MSG);
     //this.router.navigate([UrlConstants.HOME]);
