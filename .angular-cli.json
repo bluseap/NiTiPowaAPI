@@ -21,12 +21,10 @@
       "styles": [ 
         "../node_modules/bootstrap/dist/css/bootstrap.min.css",
         "../node_modules/font-awesome/css/font-awesome.css",
-        "../src/assets/css/fonts.googleapis.com.css",
-        
         "../node_modules/animate.css/animate.css",
         "../node_modules/alertifyjs/build/css/alertify.css",
-        "../node_modules/alertifyjs/build/css/themes/default.css",
-        
+        "../node_modules/alertifyjs/build/css/themes/default.css",       
+        "../src/assets/css/custom.css",
         "styles.css"
       ],
       "scripts": [
@@ -55,7 +53,8 @@
         "../node_modules/tinymce/plugins/preview/plugin.js",
         "../node_modules/tinymce/plugins/wordcount/plugin.js",
         "../node_modules/tinymce/plugins/textcolor/plugin.js",
-        "../node_modules/chart.js/dist/chart.js"
+        "../node_modules/chart.js/dist/chart.js"  
+        
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
