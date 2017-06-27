@@ -24,6 +24,22 @@ export class AuthenService {
       }
     });
   }
+  /*login(username: string, password: string) {
+    let body = "userName=" + encodeURIComponent(username) +
+      "&password=" + encodeURIComponent(password) +
+      "&grant_type=password";
+    let headers = new Headers();
+    headers.append("Content-Type", "application/x-www-form-urlencoded");
+    let options = new RequestOptions({ headers: headers });
+
+    return this._http.post(SystemConstants.BASE_API + '/api/oauth/token', body, options).map((response: Response) => {
+      let user: LoggedInUser = response.json();
+      if (user && user.access_token) {
+        localStorage.removeItem(SystemConstants.CURRENT_USER);
+        localStorage.setItem(SystemConstants.CURRENT_USER, JSON.stringify(user));
+      }
+    });
+  } */
   logout() {
     localStorage.removeItem(SystemConstants.CURRENT_USER);
   }
