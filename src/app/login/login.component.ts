@@ -8,7 +8,8 @@ import { MessageContstants } from '../core/common/message.constants';
 import {UrlConstants} from '../core/common/url.constants';
 
 import { Router } from '@angular/router';
-
+import { LoggedInUser } from '../core/domain/loggedin.user';
+import { SystemConstants } from '../core/common/system.constants';
 
 @Component({
   selector: 'app-login',
@@ -34,24 +35,25 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    //this.router.navigate([UrlConstants.HOME]);
+    let body="/api/useradmin/getuserpass?username=admin&pass=1";
 
-    let id = 1;
-//http://5951cd95138d63001132bc0e.mockapi.io/UserName
-//api/useradmin/get?id=1
-
-    this._dataServiceMoi.get('/api/useradmin/get?id=1').subscribe((response: any[]) => {
-     // this._dataServiceMoi.get('/UserName').subscribe((response: any[]) => {
+    this._dataServiceMoi.get(body).subscribe((response: any[]) => {     
       this.useradmin = response;
-
+      let id = this.useradmin.id;
       let username = this.useradmin.Username;
-      let pass = this.useradmin.Password
+      let active = this.useradmin.Active;
+      let hoten = this.useradmin.HoTen;
+      let manv = this.useradmin.MaNV;
+      let avartar = this.useradmin.Avatar;
 
-      if (this.model.username == username && this.model.password == pass) {
+      if (this.model.username == username && this.model.password == this.useradmin.Password) {
+        let user: LoggedInUser = this.useradmin;
+
         this.router.navigate([UrlConstants.HOME]);
-        //this.notificationService.printErrorMessage(MessageContstants.SYSTEM_ERROR_MSG);
-      }
 
+        localStorage.removeItem(SystemConstants.CURRENT_USER);
+        localStorage.setItem(SystemConstants.CURRENT_USER, JSON.stringify(user));        
+      }
     }, error => this._dataServiceMoi.handleError(error));
 
 
