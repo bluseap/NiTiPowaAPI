@@ -19,9 +19,9 @@ export class DataService {
   }
 
   get(uri: string) {
-    this.headers.delete("Authorization");
+    //this.headers.delete("Authorization");
     //this.headers.append("Authorization", "Bearer " + this._authenService.getLoggedInUser().access_token);
-    this.headers.append("Authorization", "Bearer ");
+    //this.headers.append("Authorization", "Bearer ");
     return this._http.get(SystemConstants.BASE_API + uri, { headers: this.headers }).map(this.extractData);
   }
   post(uri: string, data?: any) {

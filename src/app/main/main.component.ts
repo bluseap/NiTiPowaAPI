@@ -14,7 +14,7 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.user = JSON.parse(localStorage.getItem(SystemConstants.CURRENT_USER));
-    console.log(this.user);
+    //console.log(this.user);
   }
   logout() {
     localStorage.removeItem(SystemConstants.CURRENT_USER);

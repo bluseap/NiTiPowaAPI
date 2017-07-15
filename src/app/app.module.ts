@@ -15,6 +15,7 @@ import { appRoutes } from './app.routes';
     FormsModule,
     HttpModule,
     RouterModule.forRoot(appRoutes)
+    //,    PaginationModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

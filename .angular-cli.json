@@ -53,7 +53,7 @@
         "../node_modules/tinymce/plugins/preview/plugin.js",
         "../node_modules/tinymce/plugins/wordcount/plugin.js",
         "../node_modules/tinymce/plugins/textcolor/plugin.js",
-        "../node_modules/chart.js/dist/chart.js"  
+        "../node_modules/chart.js/dist/chart.js" 
         
       ],
       "environmentSource": "environments/environment.ts",

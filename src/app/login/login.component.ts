@@ -36,15 +36,18 @@ export class LoginComponent implements OnInit {
 
   login() {
     let body="/api/useradmin/getuserpass?username=admin&pass=1";
+    //let body2="/api/function/get?userid=3";
 
     this._dataServiceMoi.get(body).subscribe((response: any[]) => {     
       this.useradmin = response;
-      let id = this.useradmin.id;
+      let id = this.useradmin.Id;
       let username = this.useradmin.Username;
       let active = this.useradmin.Active;
       let hoten = this.useradmin.HoTen;
       let manv = this.useradmin.MaNV;
       let avartar = this.useradmin.Avatar;
+
+      //console.log(this.useradmin);
 
       if (this.model.username == username && this.model.password == this.useradmin.Password) {
         let user: LoggedInUser = this.useradmin;
@@ -55,6 +58,30 @@ export class LoginComponent implements OnInit {
         localStorage.setItem(SystemConstants.CURRENT_USER, JSON.stringify(user));        
       }
     }, error => this._dataServiceMoi.handleError(error));
+
+    /*this._dataServiceMoi.get(body2).subscribe((response: any[]) => {     
+
+
+      this.useradmin = response["Table"];
+
+      let id = this.useradmin.Id;
+      let username = this.useradmin.FunctionId;
+      let active = this.useradmin.Active;
+      let hoten = this.useradmin.HoTen;
+      let manv = this.useradmin.MaNV;
+      let avartar = this.useradmin.Avatar;
+
+      console.log(this.useradmin);
+
+      if (this.model.username == username && this.model.password == this.useradmin.Password) {
+        let user: LoggedInUser = this.useradmin;
+
+        this.router.navigate([UrlConstants.HOME]);
+
+        localStorage.removeItem(SystemConstants.CURRENT_USER);
+        localStorage.setItem(SystemConstants.CURRENT_USER, JSON.stringify(user));        
+      }
+    }, error => this._dataServiceMoi.handleError(error));*/
 
 
     /*this.loading = true;
