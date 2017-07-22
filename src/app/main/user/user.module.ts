@@ -8,11 +8,13 @@ import { UtilityService } from '../../core/services/utility.service';
 import { NotificationService } from '../../core/services/notification.service';
 //import { UploadService } from '../../core/services/upload.service';
 
-import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { PaginationModule } from 'ngx-bootstrap';
 import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { Daterangepicker } from 'ng2-daterangepicker';
+
+
 
 const userRoutes: Routes = [
    //localhost:4200/main/user
@@ -23,7 +25,7 @@ const userRoutes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    PaginationModule,
+    PaginationModule.forRoot(),
     FormsModule,
     MultiselectDropdownModule,
     Daterangepicker,

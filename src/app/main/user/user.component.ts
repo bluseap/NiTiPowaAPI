@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild  } from '@angular/core';
 
 import { NgForm } from '@angular/forms';
 import { DataService } from '../../core/services/data.service';
@@ -11,6 +11,7 @@ import { MessageContstants } from '../../core/common/message.constants';
 import { SystemConstants } from '../../core/common/system.constants';
 import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 
+
 @Component({
   selector: 'app-user',
   templateUrl: './user.component.html',
@@ -18,11 +19,11 @@ import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 })
 export class UserComponent implements OnInit {
 
-  //@ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
-  //@ViewChild('avatar') avatar;
+  @ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
+  @ViewChild('avatar') avatar;
   public myRoles: string[] = [];
   public pageIndex: number = 1;
-  public pageSize: number = 20;
+  public pageSize: number = 1;
   public pageDisplay: number = 10;
   public totalRow: number;
   public filter: string = '';
@@ -51,19 +52,36 @@ export class UserComponent implements OnInit {
  
 
   ngOnInit() {
-
+    this.loadRoles();
     this.loadDataUser();
   }
 
   loadDataUser() {
-    //this._dataService.get('/api/useradmin/getlist?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
-    this._dataService.get('/api/useradmin/getlist?page=1&pageSize=2&filter=')
+    this._dataService.get('/api/useradmin/getlist?page=' + this.pageIndex + '&pageSize=' + this.pageSize + '&filter=' + this.filter)
+    //this._dataService.get('/api/useradmin/getlist?page=1&pageSize=1&filter=')
       .subscribe((response: any) => {
-        this.users = response;
+        this.users = response.Items;
+        
         this.pageIndex = response.PageIndex;
         this.pageSize = response.PageSize;
         this.totalRow = response.TotalRows;
       });
+  }
+
+  loadRoles() {
+    //this._dataService.get('/api/appRole/getlistall').subscribe((response: any[]) => {
+      this._dataService.get('/api/useradmin/getlistgroup').subscribe((response: any[]) => {
+      this.allRoles = [];
+      for (let role of response) {
+        this.allRoles.push({ id: role.Id, name: role.Name });
+        //this.allRoles.push({ id: role.Name, name: role.Description });
+      }
+    }, error => this._dataService.handleError(error));
+  }
+
+  pageChanged(event: any): void {
+    this.pageIndex = event.page;
+    this.loadDataUser();
   }
 
 }
