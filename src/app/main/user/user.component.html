@@ -30,7 +30,7 @@
       </div>
       <div class="x_content">
 
-        <table class="table table-bordered">
+        <table class="table table-striped jambo_table bulk_action">
           <thead>
             <tr>
               <th>Tài khoản</th>
@@ -45,7 +45,7 @@
               <td>{{user.HoTen}}</td>              
               <td><img [src]="baseFolder + user.Avatar" class="img-responsive" width="128" /></td>
               <td>
-                <button class="btn btn-primary"  ><i class="fa fa-pencil-square-o"></i></button>
+                <button class="btn btn-primary" (click)="showEditModal(user.Id)" ><i class="fa fa-pencil-square-o"></i></button>
                 <button class="btn btn-danger"  ><i class="fa fa-trash"></i></button>
 
               </td>
@@ -81,7 +81,7 @@
 <!--Modal add and edit-->
 <div bsModal #modalAddEdit="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
   aria-hidden="true">
-  <div class="modal-dialog modal-lg">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title pull-left">Thêm/Sửa người dùng</h4>
@@ -96,7 +96,7 @@
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Họ tên</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="text" #name="ngModel" [(ngModel)]="entity.FullName" required minlength="3" name="name" class="form-control">
+              <input type="text" #name="ngModel" [(ngModel)]="entity.HoTen" required minlength="3" name="name" class="form-control">
               <small [hidden]="name.valid || (name.pristine && !addEditForm.submitted)" class="text-danger">
                 Bạn phải nhập tên ít nhất 3 ký tự
               </small>
@@ -124,7 +124,7 @@
           <div class="form-group" *ngIf="!entity.Id">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Xác nhận mật khẩu</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <input type="password" #confirmpassword="ngModel" [(ngModel)]="entity.ConfirmPassword" required validateEqual="password"
+              <input type="password" #confirmpassword="ngModel" [(ngModel)]="entity.Password" required validateEqual="password"
                 minlength="6" name="confirmpassword" class="form-control">
               <small [hidden]="confirmpassword.valid || (confirmpassword.pristine && !addEditForm.submitted)" class="text-danger">
                 Xác nhận mật khẩu sai
@@ -178,17 +178,29 @@
            <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Giới tính</label>
             <div class="col-md-6 col-sm-6 col-xs-12">
+   <!--          <input type="radio" [value]="true"  name="gender" [(ngModel)]="entity.Gender"  
+              required #gender="ngModel" (change)="selectGender($event)"  [checked]="true"    />Nam
 
-              <input type="radio" (change)="selectGender($event)" #gender="ngModel" [checked]="entity.Gender=='True'" name="gender" [ngModel]="entity.Gender" value="True" required />              Nam
+             <input type="radio" [value]="false" name="gender" [(ngModel)]="entity.Gender"  
+              #gender="ngModel" (change)="selectGender($event)"  [checked]="false"   />Nữ
 
-              <input type="radio" (change)="selectGender($event)"  #gender="ngModel" [checked]="entity.Gender=='False'" name="gender" [ngModel]="entity.Gender" value="False" />              Nữ
+               <input type="text"  name="gendernn" [(ngModel)]="entity.Gender" #gendernn="ngModel"/>
+-->
 
+             <input type="radio" [value]="true"  name="gender" [(ngModel)]="entity.Gender"  
+              required #genderControl="ngModel" (change)="selectGender($event)"  [checked]="entity.Gender=='true'"    />Nam
+
+             <input type="radio" [value]="false" name="gender" [(ngModel)]="entity.Gender"  
+              #gender="ngModel" (change)="selectGender($event)"  [checked]="entity.Gender=='false'"   />Nữ
+
+            
+            
             </div>
           </div>
           <div class="form-group">
             <label class="control-label col-md-3 col-sm-3 col-xs-12">Thuộc nhóm</label>
             <div class="col-md-9 col-sm-9 col-xs-12">
-              <ss-multiselect-dropdown [ngModelOptions]="{standalone: true}" [options]="allRoles" [(ngModel)]="myRoles"></ss-multiselect-dropdown>
+              <ss-multiselect-dropdown [ngModelOptions]="{standalone: true}" [options]="allRoles" [(ngModel)]="rolenumber"></ss-multiselect-dropdown>
             </div>
           </div>
           <div class="ln_solid"></div>
