@@ -6,7 +6,7 @@
   <div class="title_right">
     <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
       <div class="input-group">
-        <input type="text" class="form-control" name="filter" (keyup.enter)="loadData()" [(ngModel)]="filter" placeholder="Gõ tên quyền...">
+        <input type="text" class="form-control" name="filter" (keyup.enter)="loadDataUser()" [(ngModel)]="filter" placeholder="Gõ tên quyền...">
         <span class="input-group-btn">
             <button class="btn btn-default" (click)="loadDataUser()" type="button">Tìm!</button>
          </span>
@@ -185,16 +185,12 @@
               #gender="ngModel" (change)="selectGender($event)"  [checked]="false"   />Nữ
 
                <input type="text"  name="gendernn" [(ngModel)]="entity.Gender" #gendernn="ngModel"/>
+               <input type="text"  name="gendernn" [(ngModel)]="genderss" />
 -->
-
-             <input type="radio" [value]="true"  name="gender" [(ngModel)]="entity.Gender"  
-              required #genderControl="ngModel" (change)="selectGender($event)"  [checked]="entity.Gender=='true'"    />Nam
-
-             <input type="radio" [value]="false" name="gender" [(ngModel)]="entity.Gender"  
-              #gender="ngModel" (change)="selectGender($event)"  [checked]="entity.Gender=='false'"   />Nữ
-
-            
-            
+            <input type="radio" (change)="selectGender($event)"
+              name="gender" [(ngModel)]="genderss" value="true"  />Nam
+            <input type="radio" (change)="selectGender($event)"
+              name="gender" [(ngModel)]="genderss" value="false" />Nữ            
             </div>
           </div>
           <div class="form-group">

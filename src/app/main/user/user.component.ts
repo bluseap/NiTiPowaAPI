@@ -1,16 +1,16 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-
 import { NgForm } from '@angular/forms';
+
 import { DataService } from '../../core/services/data.service';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NotificationService } from '../../core/services/notification.service';
 import { UploadService } from '../../core/services/upload.service';
 import { AuthenService } from '../../core/services/authen.service';
 import { UtilityService } from '../../core/services/utility.service';
 import { MessageContstants } from '../../core/common/message.constants';
 import { SystemConstants } from '../../core/common/system.constants';
-import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
 
+import { IMultiSelectOption } from 'angular-2-dropdown-multiselect';
+import { ModalDirective } from 'ngx-bootstrap/modal';
 
 import * as moment from 'moment';
 
@@ -34,6 +34,8 @@ export class UserComponent implements OnInit {
   public baseFolder: string = SystemConstants.BASE_API;
   public allRoles: IMultiSelectOption[] = [];
   public roles: any[];
+
+  public genderss : string = "" ;
 
   public usernamelog: any[];
 
@@ -97,9 +99,11 @@ export class UserComponent implements OnInit {
           this.rolenumber.push(roleint);
         }
 
-        this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('DD/MM/YYYY');
+        //this.entity.BirthDay = moment(new Date(this.entity.BirthDay)).format('DD/MM/YYYY');
+        this.genderss = String(this.entity.Gender);
 
-        console.log(this.rolenumber);
+        //this.genderss = "false";
+        //console.log(this.rolenumber);
         //console.log(this.entity.BirthDay);
         //console.log(this.entity.Gender);
       });
@@ -115,7 +119,7 @@ export class UserComponent implements OnInit {
 
       this.entity.UserNameLog = this._authenService.getLoggedInUser().username;
 
-      this.entity.Roles = this.myRoles;
+      this.entity.Roles = this.rolenumber;
       let fi = this.avatar.nativeElement;
 
       if (fi.files.length > 0) {
@@ -164,7 +168,7 @@ export class UserComponent implements OnInit {
   }
 
   public selectGender(event) {
-    this.entity.Gender = event.target.value
+    this.entity.Gender = event.target.value;
   }
 
   public selectedDate(value: any) {
