@@ -46,7 +46,7 @@
               <td><img [src]="baseFolder + user.Avatar" class="img-responsive" width="128" /></td>
               <td>
                 <button class="btn btn-primary" (click)="showEditModal(user.Id)" ><i class="fa fa-pencil-square-o"></i></button>
-                <button class="btn btn-danger"  ><i class="fa fa-trash"></i></button>
+                <button class="btn btn-danger"  (click)="deleteItem(user.Id)"><i class="fa fa-trash"></i></button>
 
               </td>
             </tr>

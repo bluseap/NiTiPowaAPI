@@ -1,8 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
+
 import { DataService } from '../../core/services/data.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NotificationService } from '../../core/services/notification.service';
 import { MessageContstants } from '../../core/common/message.constants';
+import { AuthenService } from '../../core/services/authen.service';
 
 @Component({
   selector: 'app-role',
@@ -19,7 +22,9 @@ export class RoleComponent implements OnInit {
   public filter: string = '';
   public roles: any[];
   public entity: any;
-  constructor(private _dataService: DataService, private _notificationService: NotificationService) { }
+  constructor(private _dataService: DataService, 
+    private _notificationService: NotificationService,
+    public _authenService: AuthenService) { }
 
   ngOnInit() {
     this.loadData();
@@ -58,8 +63,11 @@ export class RoleComponent implements OnInit {
     this.modalAddEdit.show();
   }
 
-  saveChange(valid: boolean) {
-    if (valid) {
+  //saveChange(valid: boolean) {
+    saveChange(form: NgForm) {
+    if (form.valid) {
+      this.entity.UserNameLog = this._authenService.getLoggedInUser().username;
+      
       if (this.entity.Id == undefined) {
         this._dataService.post('/api/role/add', JSON.stringify(this.entity))
           .subscribe((response: any) => {
@@ -76,6 +84,15 @@ export class RoleComponent implements OnInit {
             this._notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
           }, error => this._dataService.handleError(error));
       }
+    }
+  }
+
+  private saveData(form: NgForm) {
+    if (this.entity.Id == undefined) {
+
+    }
+    else{
+
     }
   }
 
