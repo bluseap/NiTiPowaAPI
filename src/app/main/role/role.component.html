@@ -29,29 +29,37 @@
       </div>
       <div class="x_content">
 
-        <table class="table table-bordered">
+        <table class="table table-striped jambo_table bulk_action">
           <thead>
             <tr>
+              <th>Stt</th>
               <th>Tên nhóm</th>
               <th>Mô tả</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let role of roles">
+            <tr *ngFor="let role of roles; let i=index;">
+              <td>{{i+1}}</td>
               <td>{{role.Name}}</td>
               <td>{{role.Description}}</td>
               <td>
-                <button *ngIf="role.Name !='Admin'" class="btn btn-primary" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
+                <button class="btn btn-xs btn-success" (click)="showFunction(role.Id)"> <i class="fa fa-lock"  aria-hidden="true"></i></button>
+                <button *ngIf="role.Name !='admin'" class="btn btn-primary" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
                 <button *ngIf="role.Name !='Admin'" class="btn btn-danger" (click)="deleteItem(role.Id)"><i class="fa fa-trash"></i></button>
-
               </td>
             </tr>
           </tbody>
         </table>
-        <div class="col-md-12">
-          <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)" [totalItems]="totalRow"
-            [(ngModel)]="pageIndex" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+        <div class="row">
+          <div class="col-sm-5">
+            <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+              Tổng cộng: {{totalRow}}</div>
+          </div>
+          <div class="col-md-12">
+            <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)" [totalItems]="totalRow"
+              [(ngModel)]="pageIndex" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -102,3 +110,168 @@
     </div>
   </div>
 </div>
+
+<!--Modal Function-->
+<div bsModal #modalFunction="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Chức năng phân quyền</h4>
+        <button type="button" class="close pull-right" (click)="modalFunction.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal form-label-left" novalidate #addFunction="ngForm"  >
+          <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel">              
+                <div class="x_content">
+                  <tree-root #treeFunction [nodes]="_functionHierachy">
+                    <ng-template #treeNodeTemplate let-node let-index="index">
+                      <span>{{ node.data.Name }}</span>
+                      <button class="btn btn-xs btn-success" (click)="showGroupPermission(node.data.Id)"> <i class="fa fa-lock"  aria-hidden="true"></i></button>                      
+                    </ng-template> 
+                  </tree-root>
+                </div>
+              </div>
+            </div>
+        </div>    
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Group Permission-->
+<div bsModal #grouppermissionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Phân quyền cho chức năng</h4>
+        <button type="button" class="close pull-right" (click)="grouppermissionModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal form-label-left input_mask" novalidate #grouppermissionForm="ngForm" (ngSubmit)="savePermission(grouppermissionForm.valid,_grouppermission)" >
+          <table class="table">
+            <thead>
+              <tr>
+                <th>
+                  Tên quyền
+                </th>
+                <th>
+                  Quyền được làm
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let grouppermission of _grouppermission">
+                <td>
+                  {{permission.AppRole.Description}}
+                </td>
+                <td>
+                  <div class="checkbox">
+                    <label>
+                              <input type="checkbox" [(ngModel)]="grouppermission.CanRead" [name]="grouppermission.FunctionId" [ngModelOptions]="{standalone: true}"> Xem
+                            </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                              <input type="checkbox"  [(ngModel)]="grouppermission.CanCreate" [name]="grouppermission.FunctionId" name="status" [ngModelOptions]="{standalone: true}"> Thêm
+                            </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                              <input type="checkbox"  [(ngModel)]="grouppermission.CanUpdate" [name]="grouppermission.FunctionId" name="status" [ngModelOptions]="{standalone: true}"> Sửa
+                            </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                              <input type="checkbox"  [(ngModel)]="grouppermission.CanDelete" [name]="grouppermission.FunctionId" name="status" [ngModelOptions]="{standalone: true}"> Xóa
+                            </label>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="ln_solid"></div>
+          <div class="form-group">
+           
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+ <!--
+<div bsModal #grouppermissionModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Phân quyền cho chức năng</h4>
+        <button type="button" class="close pull-right" (click)="grouppermissionModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal form-label-left input_mask" novalidate #grouppermissionForm="ngForm" (ngSubmit)="savePermission(grouppermissionForm.valid,_grouppermission)">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>
+                  Tên quyền
+                </th>
+                <th>
+                  Quyền được làm
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let grouppermission of _grouppermission">
+                <td>
+                  {{permission.AppRole.Description}}
+                </td>
+                <td>
+                  <div class="checkbox">
+                    <label>
+                              <input type="checkbox" [(ngModel)]="grouppermission.CanRead" [name]="grouppermission.FunctionId" [ngModelOptions]="{standalone: true}"> Xem
+                            </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                              <input type="checkbox"  [(ngModel)]="grouppermission.CanCreate" [name]="permission.FunctionId" name="status" [ngModelOptions]="{standalone: true}"> Thêm
+                            </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                              <input type="checkbox"  [(ngModel)]="grouppermission.CanUpdate" [name]="grouppermission.FunctionId" name="status" [ngModelOptions]="{standalone: true}"> Sửa
+                            </label>
+                  </div>
+                  <div class="checkbox">
+                    <label>
+                              <input type="checkbox"  [(ngModel)]="grouppermission.CanDelete" [name]="grouppermission.FunctionId" name="status" [ngModelOptions]="{standalone: true}"> Xóa
+                            </label>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="ln_solid"></div>
+          <div class="form-group">
+            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+               <button type="button" (click)="grouppermissionModal.hide()" class="btn btn-primary">Hủy bỏ</button>
+              <button type="submit" class="btn btn-success" [disabled]="!grouppermissionModal.form.valid">Cập nhật</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+-->

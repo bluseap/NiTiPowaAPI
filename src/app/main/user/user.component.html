@@ -32,7 +32,7 @@
 
         <table class="table table-striped jambo_table bulk_action">
           <thead>
-            <tr>
+            <tr>              
               <th>Tài khoản</th>
               <th>Họ tên</th>              
               <th>Avatar</th>
@@ -40,7 +40,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let user of users">
+            <tr *ngFor="let user of users; let i=index">             
               <td>{{user.Username}}</td>
               <td>{{user.HoTen}}</td>              
               <td><img [src]="baseFolder + user.Avatar" class="img-responsive" width="128" /></td>
@@ -67,11 +67,18 @@
             </tr>
           </tbody>-->
         </table>
-        <div class="col-md-12">
-          <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" 
-            (pageChanged)="pageChanged($event)" [totalItems]="totalRow"
-            [(ngModel)]="pageIndex" class="pagination-sm" previousText="&lsaquo;" 
-            nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+        <div class="row">
+          <div class="col-sm-5">
+            <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+              Tổng cộng: {{totalRow}}</div>
+          </div>
+          <div class="col-sm-7">         
+            <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" 
+              (pageChanged)="pageChanged($event)" [totalItems]="totalRow"
+              [(ngModel)]="pageIndex" class="pagination-sm" previousText="&lsaquo;" 
+              nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;" >
+            </pagination>          
+          </div>
         </div>
       </div>
     </div>

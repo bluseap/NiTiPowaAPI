@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { TreeComponent } from 'angular-tree-component';
 
 import { DataService } from '../../core/services/data.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { NotificationService } from '../../core/services/notification.service';
 import { MessageContstants } from '../../core/common/message.constants';
 import { AuthenService } from '../../core/services/authen.service';
+import { UtilityService } from '../../core/services/utility.service';
 
 @Component({
   selector: 'app-role',
@@ -14,17 +16,28 @@ import { AuthenService } from '../../core/services/authen.service';
 })
 
 export class RoleComponent implements OnInit {
-@ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
+  @ViewChild('modalAddEdit') public modalAddEdit: ModalDirective;
+  @ViewChild('modalFunction') public modalFunction: ModalDirective;
+  @ViewChild('grouppermissionModal') public grouppermissionModal: ModalDirective;
+  @ViewChild(TreeComponent)  
+  private treeFunction: TreeComponent;
+
+  public _functionHierachy: any[];
+  public _groupId: number = 0;
+
   public pageIndex: number = 1;
-  public pageSize: number = 20;
+  public pageSize: number = 30;
   public pageDisplay: number = 10;
   public totalRow: number;
   public filter: string = '';
   public roles: any[];
   public entity: any;
+  public _grouppermission: any[];
+
   constructor(private _dataService: DataService, 
     private _notificationService: NotificationService,
-    public _authenService: AuthenService) { }
+    public _authenService: AuthenService,
+    private _utilityService: UtilityService) { }
 
   ngOnInit() {
     this.loadData();
@@ -44,8 +57,17 @@ export class RoleComponent implements OnInit {
     this._dataService.get('/api/role/get?id=' + id)
       .subscribe((response: any) => {
         this.entity = response;
-        console.log(this.entity);
+        //console.log(this.entity);
       });
+  }
+
+  loadFunction(id: any) {
+    this._dataService.get('/api/function/getlist')
+      .subscribe((response: any[]) => {
+        this._groupId = id;
+        //this._functions = response.filter(x => x.ParentId == null);
+        this._functionHierachy = this._utilityService.Unflatten3(response);
+      }, error => this._dataService.handleError(error));
   }
 
   pageChanged(event: any): void {
@@ -53,18 +75,37 @@ export class RoleComponent implements OnInit {
     this.loadData();
   }
 
+  public showGroupPermission(id: any) {
+    this._dataService.get('/api/function/getgroupfunction?groupid=' + this._groupId + '&functionid=' + id).subscribe((response: any[]) => {
+     
+      //this.functionId = id;      
+      this._grouppermission = response["Table"];
+      this.grouppermissionModal.show();
+    }, error => this._dataService.handleError(error));
+
+  }
+  public savePermission(valid: boolean, _permission: any[]) {
+    if (valid) {
+      
+      
+    }
+  }
+
+  showFunction(id: any) {
+    this.loadFunction(id);
+    this.modalFunction.show();
+  }
   showAddModal() {
     this.entity = {};
     this.modalAddEdit.show();
   }
-
   showEditModal(id: any) {
     this.loadRole(id);
     this.modalAddEdit.show();
-  }
+  } 
 
   //saveChange(valid: boolean) {
-    saveChange(form: NgForm) {
+  saveChange(form: NgForm) {
     if (form.valid) {
       this.entity.UserNameLog = this._authenService.getLoggedInUser().username;
       
@@ -99,7 +140,6 @@ export class RoleComponent implements OnInit {
   deleteItem(id: any) {
     this._notificationService.printConfirmationDialog(MessageContstants.CONFIRM_DELETE_MSG, () => this.deleteItemConfirm(id));
   }
-
   deleteItemConfirm(id: any) {
     this._dataService.delete('/api/appRole/delete', 'id', id).subscribe((response: Response) => {
       this._notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);

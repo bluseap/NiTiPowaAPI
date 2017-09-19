@@ -9,6 +9,7 @@ import { PaginationModule  } from 'ngx-bootstrap/pagination';
 import {FormsModule} from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
+import { TreeModule } from 'angular-tree-component';
 
 const roleRoutes: Routes = [
   //localhost:4200/main/role
@@ -21,6 +22,7 @@ const roleRoutes: Routes = [
   imports: [
     CommonModule,
     PaginationModule,
+    TreeModule,
     FormsModule,
     ModalModule.forRoot(),
     RouterModule.forChild(roleRoutes)
