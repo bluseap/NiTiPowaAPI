@@ -23,7 +23,7 @@ export class RoleComponent implements OnInit {
   private treeFunction: TreeComponent;
 
   public _functionHierachy: any[];
-  public _groupId: number = 0;
+  public _groupId: number = 0;  
 
   public pageIndex: number = 1;
   public pageSize: number = 30;
@@ -33,6 +33,7 @@ export class RoleComponent implements OnInit {
   public roles: any[];
   public entity: any;
   public _grouppermission: any[];
+  public _permission: any;
 
   constructor(private _dataService: DataService, 
     private _notificationService: NotificationService,
@@ -49,7 +50,7 @@ export class RoleComponent implements OnInit {
         this.roles = response.Items;
         this.pageIndex = response.PageIndex;
         this.pageSize = response.PageSize;
-        this.totalRow = response.TotalRows;
+        this.totalRow = response.TotalRows;       
       });
   }
 
@@ -57,7 +58,7 @@ export class RoleComponent implements OnInit {
     this._dataService.get('/api/role/get?id=' + id)
       .subscribe((response: any) => {
         this.entity = response;
-        //console.log(this.entity);
+        //console.log(this.entity);        
       });
   }
 
@@ -77,20 +78,23 @@ export class RoleComponent implements OnInit {
 
   public showGroupPermission(id: any) {
     this._dataService.get('/api/function/getgroupfunction?groupid=' + this._groupId + '&functionid=' + id).subscribe((response: any[]) => {
-     
-      //this.functionId = id;      
-      this._grouppermission = response["Table"];
+      //this.functionId = id; 
+
+      var functionUrl : string;     
+      for(let url of response["Table"]){
+        functionUrl = url.FuctionUrl;
+      }     
+      
+      if(functionUrl == "#"){
+        return;
+      }
+
+      this._grouppermission = response["Table"];  
+
       this.grouppermissionModal.show();
     }, error => this._dataService.handleError(error));
-
   }
-  public savePermission(valid: boolean, _permission: any[]) {
-    if (valid) {
-      
-      
-    }
-  }
-
+  
   showFunction(id: any) {
     this.loadFunction(id);
     this.modalFunction.show();
@@ -101,7 +105,7 @@ export class RoleComponent implements OnInit {
   }
   showEditModal(id: any) {
     this.loadRole(id);
-    this.modalAddEdit.show();
+    this.modalAddEdit.show();    
   } 
 
   //saveChange(valid: boolean) {
@@ -128,12 +132,14 @@ export class RoleComponent implements OnInit {
     }
   }
 
-  private saveData(form: NgForm) {
-    if (this.entity.Id == undefined) {
-
-    }
-    else{
-
+  public savePermission(valid: boolean,_permission: any) {
+    if (valid) {
+      _permission[0].UserNameLog = this._authenService.getLoggedInUser().username;
+      
+      this._dataService.put('/api/role/upgroupper', JSON.stringify(_permission[0])).subscribe((response: any) => {
+        this._notificationService.printSuccessMessage(MessageContstants.UPDATED_OK_MSG);
+        this.grouppermissionModal.hide();
+      }, error => this._dataService.handleError(error));
     }
   }
 

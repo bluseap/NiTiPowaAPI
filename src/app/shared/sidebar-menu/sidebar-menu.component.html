@@ -14,7 +14,7 @@
         <ul class="nav child_menu">
           <li *ngFor="let subitem of functions">
             <a  *ngIf="subitem.Parent == item.FunctionId"
-              routerLink="{{subitem.Url}}" routerLinkActive="active">
+              routerLink="{{subitem.Url}}" routerActive ="active">
               {{subitem.Name}}
             </a>
           </li>
