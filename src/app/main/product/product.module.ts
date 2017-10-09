@@ -24,7 +24,7 @@ const ProductRoutes: Routes = [
 @NgModule({
   imports: [
     CommonModule,
-    PaginationModule.forRoot(),
+    PaginationModule,
     FormsModule,
     MultiselectDropdownModule,
     Daterangepicker,

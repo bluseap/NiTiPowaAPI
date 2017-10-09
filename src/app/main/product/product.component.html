@@ -1,3 +1,164 @@
-<p>
-  product works!
-</p>
+<div class="page-title">
+  <div class="title_left">
+    <h3>Danh sách Hàng hóa</h3>
+  </div>
+  <div class="title_right">
+    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+      <div class="input-group">
+        <input type="text" class="form-control" name="filter" (keyup.enter)="loadHangHoa()" [(ngModel)]="filter" placeholder="Gõ mã vạch, tên hàng...">
+        <span class="input-group-btn">
+            <button class="btn btn-default" (click)="loadHangHoa()" type="button">Tìm!</button>
+         </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
+      <div class="x_title">
+        <ul class="nav navbar-right panel_toolbox">
+          <li>
+            <button class="btn btn-success" (click)="showAddProduct()">Thêm mới</button>
+          </li>
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="x_content">
+        <table class="table table-striped jambo_table bulk_action">
+          <thead>
+            <tr>
+              <th>Mã vạch</th>
+              <th>Tên hàng</th>
+              <th>Loại hàng</th>
+              <th>Giá nhập</th>
+              <th>SL nhập</th>
+              <th>Giá bán</th>
+              <th>SL bán</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pro of products">
+              <td>{{pro.MaVach}}</td>
+              <td>{{pro.Name}}</td>
+              <td>{{pro.CategoryName}}</td>
+              <!--<ul *ngFor="let procate of productCategories" >
+                <td *ngIf="procate.ID==pro.CategoryID">{{procate.Name}}</td>
+              </ul>-->
+              <!--<div *ngFor="let procate of productCategories" >
+                <td *ngIf="procate.CategoryID==pro.CategoryID"> {{pro.CategoryID}}</td>
+              </div>-->
+              <td>{{pro.TienMua}}</td>
+              <td>{{pro.SoLuongMua}}</td>
+              <td>{{pro.TienBan}}</td>
+              <td>{{pro.SoLuongBan}}</td>
+              <td>
+                <button class="btn btn-primary" (click)="showEditProduct(pro.ID)"><i class="fa fa-pencil-square-o"></i></button>
+                <button class="btn btn-danger" (click)="deleteProduct(pro.ID)"><i class="fa fa-trash"></i></button>
+              </td>
+              <!--<td>
+                <button class="btn btn-xs btn-success" (click)="showFunction(role.Id)"> <i class="fa fa-lock"  aria-hidden="true"></i></button>
+                <button *ngIf="role.Name !='admin'" class="btn btn-primary" (click)="showEditModal(role.Id)"><i class="fa fa-pencil-square-o"></i></button>
+                <button *ngIf="role.Name !='Admin'" class="btn btn-danger" (click)="deleteItem(role.Id)"><i class="fa fa-trash"></i></button>              
+              </td>-->
+            </tr>
+          </tbody>
+        </table>
+        <!--<div class="row">
+          <div class="col-sm-5">
+            <div class="dataTables_info" id="datatable_info" role="status" aria-live="polite">
+              Tổng cộng: {{totalRow}}</div>
+          </div>
+          <div class="col-md-12">
+            <pagination [boundaryLinks]="true" [itemsPerPage]="pageSize" (pageChanged)="pageChanged($event)" [totalItems]="totalRow"
+              [(ngModel)]="pageIndex" class="pagination-sm" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+          </div> 
+        </div>-->
+      </div>
+    </div>
+  </div>
+</div>
+<!--Modal add and edit-->
+<div bsModal #modalAddEditProduct="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">Thêm/Sửa quyền</h4>
+        <button type="button" class="close pull-right" (click)="modalAddEditProduct.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal form-label-left" novalidate #addEditProductForm="ngForm" (ngSubmit)="saveProductChange(addEditProductForm)"
+          *ngIf="entity">
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Mã vạch</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="hidden" [(ngModel)]="entity.ID" name="id" />
+              <input type="text" #mavach="ngModel" [(ngModel)]="entity.MaVach" required minlength="3" name="mavach" class="form-control">
+              <small [hidden]="mavach.valid || (mavach.pristine && !addEditProductForm.submitted)" class="text-danger">
+                Bạn phải nhập tên ít nhất 3 ký tự
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Tên hàng</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="text" #tenhang="ngModel" [(ngModel)]="entity.Name" required minlength="3" name="tenhang" class="form-control">
+              <small [hidden]="tenhang.valid || (tenhang.pristine && !addEditProductForm.submitted)" class="text-danger">
+                Bạn phải nhập tên ít nhất 3 ký tự
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Loại hàng</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <select class="form-control" *ngIf="productCategories && productCategories.length > 0" name="categoryID" [(ngModel)]="entity.CategoryID">
+                <option value="">--Chọn chức năng cha--</option>
+                <option *ngFor="let item of productCategories" [value]="item.ID">{{item.Name}}</option>                            
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá nhập</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="number" #tienmua="ngModel" [(ngModel)]="entity.TienMua" required name="tienmua" class="form-control" />
+              <small [hidden]="tienmua.valid || (tienmua.pristine && !addEditProductForm.submitted)" class="text-danger">
+                Bạn phải nhập giá nhập
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Giá bán</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="number" #tienban="ngModel" [(ngModel)]="entity.TienBan" required name="tienban" class="form-control" />
+              <small [hidden]="tienban.valid || (tienban.pristine && !addEditProductForm.submitted)" class="text-danger">
+                Bạn phải nhập giá bán
+              </small>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="control-label col-md-3 col-sm-3 col-xs-12">Số lượng</label>
+            <div class="col-md-9 col-sm-9 col-xs-12">
+              <input type="number" #soluong="ngModel" [(ngModel)]="entity.SoLuongMua" required name="soluong" class="form-control" />
+              <small [hidden]="soluong.valid || (soluong.pristine && !addEditProductForm.submitted)" class="text-danger">
+                Bạn phải nhập số lượng
+              </small>
+            </div>
+          </div>
+
+          <div class="ln_solid"></div>
+          <div class="form-group">
+            <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+              <button type="button" (click)="modalAddEditProduct.hide()" class="btn btn-primary">Hủy bỏ</button>
+              <button type="submit" class="btn btn-success" [disabled]="!addEditProductForm.form.valid">Cập nhật</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
