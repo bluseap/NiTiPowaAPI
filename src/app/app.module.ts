@@ -5,10 +5,11 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { appRoutes } from './app.routes';
+//import { BanhangComponent } from './banhang/banhang.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent//,    BanhangComponent
   ],
   imports: [
     BrowserModule,

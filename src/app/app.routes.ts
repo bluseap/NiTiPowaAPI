@@ -6,5 +6,7 @@ export const appRoutes: Routes = [
     //localhost:4200/login
     { path: 'login', loadChildren: './login/login.module#LoginModule' },
      //localhost:4200/main
-    { path: 'main', loadChildren: './main/main.module#MainModule' }
+    { path: 'main', loadChildren: './main/main.module#MainModule' },
+     //localhost:4200/banhang
+    { path: 'banhang', loadChildren: './banhang/banhang.module#BanhangModule' }
 ]

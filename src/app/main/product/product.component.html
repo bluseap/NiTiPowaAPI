@@ -17,6 +17,43 @@
 <div class="row">
   <div class="col-md-12 col-sm-12 col-xs-12">
     <div class="x_panel">
+      
+      <div class="x_content">
+        <section class="content invoice">
+          <div class="row">
+
+            <div class="col-xs-6">
+              <p class="lead">Tổng tiền mua, bán và số lượng mua, bán</p>
+              <div class="table-responsive">
+                <table class="table">                  
+                  <tbody>                    
+                    <tr *ngFor ="let sumpro of sumproduct">
+                      <th style="width:50%">Tổng tiền mua:</th>
+                      <td >{{sumpro.TienMuaTong}}</td>
+                      <td >{{sumpro.SoLuongMua}}</td>
+                    </tr>
+                    <tr *ngFor ="let sumpro of sumproduct">
+                      <th style="width:50%">Tổng tiền bán:</th>
+                      <td>{{sumpro.TienTongBan}}</td>
+                      <td>{{sumpro.SoLuongBan}}</td>
+                      
+                    </tr>
+                    
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="x_panel">
       <div class="x_title">
         <ul class="nav navbar-right panel_toolbox">
           <li>

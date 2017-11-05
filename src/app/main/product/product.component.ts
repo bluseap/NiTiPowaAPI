@@ -24,6 +24,7 @@ export class ProductComponent implements OnInit {
   public totalRow: number;
   public filter: string = '';
 
+  public sumproduct: any[];
   public products: any[];
   public entity: any;
   public productCategories: any = [];
@@ -36,6 +37,14 @@ export class ProductComponent implements OnInit {
   ngOnInit() {
     this.loadHangHoa();
     this.loadProductCategories();
+    this.loadsumProduct();
+  }
+
+  public loadsumProduct()
+  {
+    this._dataService.get('/api/product/sumproduct').subscribe((response: any[]) => {
+      this.sumproduct = response["Table"];  
+    }, error => this._dataService.handleError(error));
   }
 
   public loadProductCategories() {
@@ -71,7 +80,7 @@ export class ProductComponent implements OnInit {
   }
 
   deleteProductConfirm(id: any) {
-    this._dataService.delete('/api/useradmin/delete', 'id', id).subscribe((response: Response) => {
+    this._dataService.delete('/api/product/delete', 'id', id).subscribe((response: Response) => {
       this._notificationService.printSuccessMessage(MessageContstants.DELETED_OK_MSG);
       this.loadHangHoa();
     });
