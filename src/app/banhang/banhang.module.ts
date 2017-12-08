@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { BanhangComponent } from './banhang.component';
 import { FormsModule } from '@angular/forms';
+import {FocusModule} from 'angular2-focus';
 
 import { AuthenService } from '../core/services/authen.service';
 
@@ -19,6 +20,7 @@ export const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    FocusModule,
     RouterModule.forChild(routes)
   ],  
   providers: [ AuthenService,DataService, UtilityService,NotificationService],
